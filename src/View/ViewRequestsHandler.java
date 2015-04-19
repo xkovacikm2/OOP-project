@@ -14,6 +14,11 @@ import model.terrain.Map;
  * @author kovko
  */
 public final class ViewRequestsHandler {
+    /**
+     * Translation constant from matrix to pixel representation
+     */
+    public static final int DEFAULT_MAP_RECT_SIZE = 20;
+    
     private static Surface surface;
     private static GUI gui;
     
@@ -32,11 +37,6 @@ public final class ViewRequestsHandler {
     public static void consolePrintln(double d){
         consolePrintln(Double.toString(d));
     }
-        
-    /**
-     * Translation constant from matrix to pixel representation
-     */
-    public static final int DEFAULT_MAP_RECT_SIZE = 20;
 
     private static Color pickColor(DynamicGameObject object) {
         if(object.focused()){
@@ -69,13 +69,11 @@ public final class ViewRequestsHandler {
     public static void repaintBattleGround() {
         List<DynamicGameObject> Objects = FieldObserver.getDynamicObjectsArrayList();
         surface.resetObjects();
-        
         Objects.stream().forEach((object) -> {
             Rectangle2D.Float rect = new Rectangle2D.Float(object.getX()*DEFAULT_MAP_RECT_SIZE, object.getY()*DEFAULT_MAP_RECT_SIZE, (object.getSize()+1)*DEFAULT_MAP_RECT_SIZE, (object.getSize()+1)*DEFAULT_MAP_RECT_SIZE);
             Color color = pickColor(object);
             surface.addObjects(new DrawableObject(color, rect));
         });
-        
         gui.repaint();
         gui.requestFocus();
     }

@@ -8,8 +8,14 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 /**
@@ -23,18 +29,42 @@ public class Surface extends JPanel{
     private List<Rectangle2D.Float> walls;
     private List<DrawableObject> objects;
     
+    private BufferedImage wallTexture;
+    private BufferedImage exitTexture;
+    private BufferedImage tankTexture;
+    private BufferedImage projectileTexture;
     private Color backgroundColor;
-    private Color wallColor;
-    private Color exitColor;
     
     public Surface(){
         super();
+        this.loadImages();
         this.walls = new ArrayList<>();
         this.objects = new ArrayList<>();
-        this.exitColor = Color.blue;
         this.backgroundColor = Color.white;
-        this.wallColor = Color.red;
         this.addMouseListener(new MouseClickListener());
+    }
+    
+    private void loadImages(){
+        try {
+            wallTexture = ImageIO.read(new File("images/brickwall.png"));
+        } catch (IOException ex) {
+            Logger.getLogger(Surface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            exitTexture = ImageIO.read(new File("images/exit.png"));
+        } catch (IOException ex) {
+            Logger.getLogger(Surface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            tankTexture = ImageIO.read(new File("images/tank.png"));
+        } catch (IOException ex) {
+            Logger.getLogger(Surface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            projectileTexture = ImageIO.read(new File("images/projectile.png"));
+        } catch (IOException ex) {
+            Logger.getLogger(Surface.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
             
     @Override
@@ -50,19 +80,23 @@ public class Surface extends JPanel{
         g2d.setColor(backgroundColor);
         g2d.fill(background);
         
-        g2d.setColor(wallColor);
         walls.stream().forEach((wall) -> {
-            g2d.fill(wall);
+            g2d.drawImage(wallTexture, (int)wall.x, (int)wall.y, (int)wall.width, (int)wall.height, null);
         });
         
-        g2d.setColor(exitColor);
-        g2d.fill(exit);
+        g2d.drawImage(exitTexture, (int)exit.x, (int)exit.y, (int)exit.width, (int)exit.height, null);
 
         ViewRequestsHandler.consolePrintln("Object drawn: "+objects.size());
                 
         objects.stream().forEach((object) -> {
             g2d.setColor(object.color);
-            g2d.fill(object.rect);
+            if(object.rect.width>ViewRequestsHandler.DEFAULT_MAP_RECT_SIZE+1){
+                g2d.fill(object.rect);
+                g2d.drawImage(tankTexture, (int)object.rect.x, (int)object.rect.y, (int)object.rect.width-5, (int)object.rect.height-5, null);
+            }
+            else{
+                g2d.drawImage(projectileTexture, (int)object.rect.x, (int)object.rect.y, (int)object.rect.width, (int)object.rect.height, null);
+            }
         });
               
         ViewRequestsHandler.consolePrintln("Surface repainted");

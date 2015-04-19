@@ -46,9 +46,9 @@ public class Tank extends DynamicGameObject{
         for(OnTankMoveListener listener:onTankMoveListeners){
             listener.onTankMove(this);
         }
+        ViewRequestsHandler.repaintBattleGround();
         this.dx=0;
         this.dy=0;
-        ViewRequestsHandler.repaintBattleGround();
         return false;
     }
     
