@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -132,7 +133,12 @@ public class Surface extends JPanel{
             
             for (DrawableObject object:objects){
                 if(object.rect.contains(x, y)){
-                    Controller.objectClicked((int)object.rect.x, (int)object.rect.y);
+                    try{
+                        Controller.objectClicked((int)object.rect.x, (int)object.rect.y);
+                    }
+                    catch(Exception exception){
+                        JOptionPane.showMessageDialog(Surface.this, exception.getMessage(), "Upozornenie", JOptionPane.INFORMATION_MESSAGE);
+                    }
                     break;
                 }
             }

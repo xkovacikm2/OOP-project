@@ -22,13 +22,14 @@ public final class Controller {
     }
     
     
-    public static void objectClicked(int x, int y){
-        if(clickedId!=FocusSetter.ID_NULL){
-            int coords[]= {x/ViewRequestsHandler.DEFAULT_MAP_RECT_SIZE,y/ViewRequestsHandler.DEFAULT_MAP_RECT_SIZE};
-            System.out.println("Object detected at clicked coords. Matrix coords are: "+coords[0]+" "+coords[1]);
-            setFocus(new FocusSetter(clickedId, coords));
-            clickedId = FocusSetter.ID_NULL;
+    public static void objectClicked(int x, int y) throws Exception{
+        if(clickedId==FocusSetter.ID_NULL){
+            throw (CrewNotSelectedException.factory());
         }
+        int coords[]= {x/ViewRequestsHandler.DEFAULT_MAP_RECT_SIZE,y/ViewRequestsHandler.DEFAULT_MAP_RECT_SIZE};
+        System.out.println("Object detected at clicked coords. Matrix coords are: "+coords[0]+" "+coords[1]);
+        setFocus(new FocusSetter(clickedId, coords));
+        clickedId = FocusSetter.ID_NULL;
     }
     
     /**
