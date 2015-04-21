@@ -23,6 +23,13 @@ public final class ViewRequestsHandler {
     private static GUI gui;
     
     /**
+     * Utility class is not ment to be instanced!!!
+     */
+    private ViewRequestsHandler() throws Exception{
+        throw new Exception("Utility class is not ment to be instanced!!!");
+    }
+    
+    /**
      * Prints string to console
      * @param s
      */
@@ -31,11 +38,11 @@ public final class ViewRequestsHandler {
     }
     
     /**
-     * Converts double to string and calls overloaded method {@link ViewRequestsHandler#consolePrintln(java.lang.String)  consolePrintln}
-     * @param d 
+     * Converts number to string and calls overloaded method {@link ViewRequestsHandler#consolePrintln(java.lang.String)  consolePrintln}
+     * @param n 
      */
-    public static void consolePrintln(double d){
-        consolePrintln(Double.toString(d));
+    public static void consolePrintln(Number n){
+        consolePrintln(n.toString());
     }
 
     private static Color pickColor(DynamicGameObject object) {
@@ -50,8 +57,6 @@ public final class ViewRequestsHandler {
         }
         return DrawableObject.PROJECTILE_COLOR;
     }
-
-    private ViewRequestsHandler(){}
     
     /**
      * Creates instances of GUI, creates menus, prepares Canvas

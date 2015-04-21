@@ -1,8 +1,6 @@
 package model.basic;
 
 import View.ViewRequestsHandler;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import model.terrain.Map;
 
 /*
@@ -11,12 +9,16 @@ import model.terrain.Map;
  *
  * @author kovko
  */
-public class Main implements ActionListener{
+public class Main {
     private static Colonel colonel1;
     private static Colonel colonel2;
-    public static final Main instanceOfMain = new Main();
     
-    private void Main(){}
+    /**
+     * Utility class is not ment to be instanced!!!
+     */
+    private Main() throws Exception{
+        throw new Exception("Utility class is not ment to be instanced!!!");
+    }
     
     /**
      * Spawns colonels. creates new instance of map, starts mainLoop of project
@@ -35,9 +37,7 @@ public class Main implements ActionListener{
         colonel2.announceTarget();
     }
     
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    public static void mainLoop() {
         if(!colonel1.won() && !colonel2.won()){
             colonel1.sendLoopSignal();
             colonel2.sendLoopSignal();

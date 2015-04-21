@@ -15,7 +15,12 @@ public final class FieldObserver {
     private static List<DynamicGameObject> DynamicObjects = new ArrayList<>();
     private static Map map;
     
-    private FieldObserver(){}
+    /**
+     * Utility class is not ment to be instanced!!!
+     */
+    private FieldObserver() throws Exception{
+        throw new Exception("Utility class is not ment to be instanced!!!");
+    }
     
     /**
      * Setter for map when generated
@@ -44,7 +49,7 @@ public final class FieldObserver {
     
     /**
      * Adds new observable to observer arraylist
-     * @param DynamicGameObject newDGO 
+     * @param newDGO 
      */
     public static void addDynamicGameObject(DynamicGameObject newDGO){
         DynamicObjects.add(newDGO);
@@ -203,7 +208,7 @@ public final class FieldObserver {
         for(final DynamicGameObject dynamicObject : DynamicObjects){
             map.animateObject(dynamicObject.getX(), dynamicObject.getY(), dynamicObject.getSize(), dynamicObject.getPlaceHolder());
         }
-        map.print("Loop status");
+        //map.print("Loop status");
     }
 }
 

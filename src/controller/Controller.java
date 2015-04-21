@@ -9,7 +9,12 @@ public final class Controller {
     
     private static int clickedId = FocusSetter.ID_NULL;
     
-    private Controller(){}
+    /**
+     * Utility class is not ment to be instanced!!!
+     */
+    private Controller() throws Exception{
+        throw new Exception("Utility class is not ment to be instanced!!!");
+    }
     
     private static List<ControllerObservable> Observables = new ArrayList<>();
     
@@ -24,7 +29,7 @@ public final class Controller {
     
     public static void objectClicked(int x, int y) throws Exception{
         if(clickedId==FocusSetter.ID_NULL){
-            throw (CrewNotSelectedException.factory());
+            throw (CrewNotSelectedException.getInstance());
         }
         int coords[]= {x/ViewRequestsHandler.DEFAULT_MAP_RECT_SIZE,y/ViewRequestsHandler.DEFAULT_MAP_RECT_SIZE};
         System.out.println("Object detected at clicked coords. Matrix coords are: "+coords[0]+" "+coords[1]);

@@ -87,7 +87,7 @@ public class GUI extends JFrame{
         switchToSetFocusMenu.addActionListener(e->{switchMenus(menuSetFocus, menuDefault);});
         
         moveLoop = createButton("Ukončiť ťah", menuDefault);
-        moveLoop.addActionListener(Main.instanceOfMain);
+        moveLoop.addActionListener(e->{Main.mainLoop();});
     };
     
     private void setMenuSetFocusButtons(){

@@ -14,7 +14,7 @@ public class CrewNotSelectedException extends Exception{
      * Constructor replacement
      * @return instanceOfCrewNotSelectedException
      */
-    public static CrewNotSelectedException factory(){
+    public static CrewNotSelectedException getInstance(){
         if(instance==null){
             instance=new CrewNotSelectedException();
         }
