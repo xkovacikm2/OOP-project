@@ -48,23 +48,12 @@ public class Surface extends JPanel{
     private void loadImages(){
         try {
             wallTexture = ImageIO.read(new File("images/brickwall.png"));
-        } catch (IOException ex) {
-            Logger.getLogger(Surface.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
             exitTexture = ImageIO.read(new File("images/exit.png"));
-        } catch (IOException ex) {
-            Logger.getLogger(Surface.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
             tankTexture = ImageIO.read(new File("images/tank.png"));
-        } catch (IOException ex) {
-            Logger.getLogger(Surface.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
             projectileTexture = ImageIO.read(new File("images/projectile.png"));
-        } catch (IOException ex) {
-            Logger.getLogger(Surface.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        catch (IOException ex) {
+            JOptionPane.showMessageDialog(Surface.this, ex.getMessage(), "Upozornenie", JOptionPane.ERROR_MESSAGE);
         }
     }
             

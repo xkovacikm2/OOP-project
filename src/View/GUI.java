@@ -107,13 +107,13 @@ public class GUI extends JFrame{
             System.out.println("KeyPress detected");
             switch(event.getKeyCode()){
                 case KeyEvent.VK_UP: 
-                    Controller.notify(new ControllerEvent(ControllerEvent.UP_ARROW)); break;
+                    new Thread(() -> Controller.notify(new ControllerEvent(ControllerEvent.UP_ARROW))).start(); break;
                 case KeyEvent.VK_DOWN:
-                    Controller.notify(new ControllerEvent(ControllerEvent.DOWN_ARROW)); break;
+                    new Thread(() -> Controller.notify(new ControllerEvent(ControllerEvent.DOWN_ARROW))).start(); break;
                 case KeyEvent.VK_LEFT:
-                    Controller.notify(new ControllerEvent(ControllerEvent.LEFT_ARROW)); break;
+                    new Thread(() -> Controller.notify(new ControllerEvent(ControllerEvent.LEFT_ARROW))).start(); break;
                 case KeyEvent.VK_RIGHT:
-                    Controller.notify(new ControllerEvent(ControllerEvent.RIGHT_ARROW)); break;
+                    new Thread(() -> Controller.notify(new ControllerEvent(ControllerEvent.RIGHT_ARROW))).start(); break;
                 default: ;
             }
         }
