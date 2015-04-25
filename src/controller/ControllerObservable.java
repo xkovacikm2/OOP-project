@@ -3,6 +3,10 @@ package controller;
 
 import View.ViewRequestsHandler;
 
+/**
+ * Serves as interface for controllable objects
+ * @author kovko
+ */
 abstract public class ControllerObservable {
     
     protected int idCrew;
@@ -21,16 +25,15 @@ abstract public class ControllerObservable {
     
     /**
      * Controller Event handler
-     * @param e
-     * @return 
+     * @param e event to be handled
      */
     abstract public void controllerActionListener(ControllerEvent e);
    
     /**
      * observable checks coordinates given with its own and if there is match, it sets it's focus value to true
      * if there is not a match, it sets it's focus to false
-     * @param fs
-     * @return 
+     * @param fs event to be handled
+     * @return true if focus was set succesfully, returns false otherwise
      */
     public boolean controllerSetFocusListener(FocusSetter fs){
         System.out.println(this+" is checking if clicked. My coords are: "+getCoords()[0]+" "+getCoords()[1]+" click coords are: "+fs.getCoords()[0]+" "+fs.getCoords()[1]);
@@ -46,7 +49,7 @@ abstract public class ControllerObservable {
     
     /**
      * simple focus getter
-     * @return true if focused
+     * @return true if focused false otherwise
      */
     public boolean isFocused(){
         return focus;

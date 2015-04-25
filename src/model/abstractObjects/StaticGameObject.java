@@ -3,7 +3,7 @@ package model.abstractObjects;
 
 
 /**
- *
+ *Interface for objects that are not able to move by themselves
  * @author kovko
  */
 public abstract class StaticGameObject{
@@ -28,16 +28,16 @@ public abstract class StaticGameObject{
     }
     
     /**
-     * simple getter for x coordinate of the object
-     * @return x coordinate of the object
+     * simple getter for {@link StaticGameObject#x}
+     * @return {@link StaticGameObject#x}
      */
     public final int getX() {
         return x;
     }
 
     /**
-     * simple getter for y coordinate of the object
-     * @return y coordinate of the object
+     * simple getter for {@link StaticGameObject#y}
+     * @return {@link StaticGameObject#y}
      */
     public final int getY() {
         return y;

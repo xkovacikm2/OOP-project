@@ -1,4 +1,3 @@
-
 package model.basic;
 
 import model.abstractObjects.DynamicGameObject;
@@ -7,12 +6,12 @@ import java.util.List;
 import model.terrain.Map;
 
 /**
- *
+ * Central model observer
  * @author kovko
  */
 public final class FieldObserver {
 
-    private static List<DynamicGameObject> DynamicObjects = new ArrayList<>();
+    private static final List<DynamicGameObject> DynamicObjects = new ArrayList<>();
     private static Map map;
     
     /**
@@ -23,8 +22,8 @@ public final class FieldObserver {
     }
     
     /**
-     * Setter for map when generated
-     * @param Map 
+     * Setter for {@link FieldObserver#map}
+     * @param map instance of map
      */
     static void setMap(Map map){
         FieldObserver.map=map;
@@ -32,8 +31,8 @@ public final class FieldObserver {
     }
     
     /**
-     * Getter for generated map
-     * @return Map terrain map
+     * Getter for {@link FieldObserver#map}
+     * @return {@link FieldObserver#map}
      */
     static Map getMap(){
         return map;
@@ -48,8 +47,8 @@ public final class FieldObserver {
     }
     
     /**
-     * Adds new observable to observer arraylist
-     * @param newDGO 
+     * Adds new observable to {@link FieldObserver#DynamicObjects}
+     * @param newDGO object to be added
      */
     public static void addDynamicGameObject(DynamicGameObject newDGO){
         DynamicObjects.add(newDGO);
@@ -57,8 +56,8 @@ public final class FieldObserver {
     }
     
     /**
-     * Removes destroyed observable from observer arraylist
-     * @param toDestroy 
+     * Removes destroyed observable from {@link FieldObserver#DynamicObjects}
+     * @param toDestroy  object to be removed
      */
     public static void removeDynamicGameObject(DynamicGameObject toDestroy){
         System.out.println("Observer lost track of: "+toDestroy);
@@ -67,7 +66,6 @@ public final class FieldObserver {
     
     /**
      * request to clear all objects from map
-     * just for Text Based Interface
      */
     static void clearMap(){
         map.clear();
@@ -78,15 +76,8 @@ public final class FieldObserver {
      * every observed DynamicGameObject has method logic() called
      */
     static void moveLoop(){
-        int i=0;
-        while(i<DynamicObjects.size()){
-            DynamicGameObject dynamicObject = DynamicObjects.get(i);
-            if(dynamicObject.logic()){
-                i--;
-            }
-            i++;
-        }
-        
+        try{DynamicObjects.stream().forEach(dgo -> dgo.logic());}
+        catch(Exception e){}
     }
     
     /**
@@ -130,15 +121,10 @@ public final class FieldObserver {
     /**
      * Checks if requested coordinates are clear to go
      * @param coords
-     * @return 
+     * @return true if collision occured false otherwise
      */
     public static boolean positionClear(int[] coords){
-        for(final DynamicGameObject dynamicObject : DynamicObjects){
-            if(dynamicObject.isCollision(coords[0], coords[1])){
-                return true;
-            }
-        }
-        return false;
+        return DynamicObjects.stream().anyMatch((dynamicObject) -> (dynamicObject.isCollision(coords[0], coords[1])));
     }
     
     /**
@@ -186,29 +172,23 @@ public final class FieldObserver {
      * @param projectilePosition 
      */
     public static void onProjectileExplosion(int projectilePosition[]){
-        int i = 0;
-        while(i<DynamicObjects.size()){
-            DynamicGameObject dynamicObject = DynamicObjects.get(i);
-            if(dynamicObject.onProjectileHit(projectilePosition)){
-                i--;
-            }
-            i++;
-        }
+        try{DynamicObjects.stream().forEach(dgo -> dgo.onProjectileHit(projectilePosition));}
+        catch(Exception e){}
     }
     
+    /**
+     * Simple getter for {@link FieldObserver#DynamicObjects}
+     * @return 
+     */
     public static List<DynamicGameObject> getDynamicObjectsArrayList(){
         return DynamicObjects;
     }
     
-     /**
+    /**
      * animate every DynamicGameObject on map
-     * just for Text Based Interface
      */
     static void animateMap(){
-        for(final DynamicGameObject dynamicObject : DynamicObjects){
-            map.animateObject(dynamicObject.getX(), dynamicObject.getY(), dynamicObject.getSize(), dynamicObject.getPlaceHolder());
-        }
-        //map.print("Loop status");
+        DynamicObjects.stream().forEach((dynamicObject) -> map.animateObject(dynamicObject.getX(), dynamicObject.getY(), dynamicObject.getSize(), dynamicObject.getPlaceHolder()));
     }
 }
 

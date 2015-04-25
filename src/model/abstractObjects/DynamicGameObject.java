@@ -4,7 +4,7 @@ package model.abstractObjects;
 import View.ViewRequestsHandler;
 
 /**
- *
+ *Interface for objects capable of movement
  * @author kovko
  */
 public abstract class DynamicGameObject extends StaticGameObject {
@@ -35,6 +35,7 @@ public abstract class DynamicGameObject extends StaticGameObject {
      * @param y coordinate for spawning object
      * @param dx default velocity in x direction
      * @param dy default velocity in y direction
+     * @param size  of object
      */
     public DynamicGameObject(int x, int y, int dx, int dy, int size){
         super(x, y);
@@ -47,6 +48,7 @@ public abstract class DynamicGameObject extends StaticGameObject {
      * 
      * @param x coordinate for spawning object
      * @param y coordinate for spawning object
+     * @param size of object
      */
     public DynamicGameObject(int x, int y, int size){
         this(x, y, 0, 0, size);
@@ -54,7 +56,7 @@ public abstract class DynamicGameObject extends StaticGameObject {
     
     /**
      * simple getter for velocity in x direction
-     * @return integer representation of velocity in x direction
+     * @return {@link DynamicGameObject#dx}
      */
     public final int getDx() {
         return dx;
@@ -62,23 +64,23 @@ public abstract class DynamicGameObject extends StaticGameObject {
 
     /**
      * simple setter for velocity in x direction
-     * @param dx integer value of velocity in x direction
+     * @param dx int value of velocity in x direction
      */
     public final void setDx(int dx) {
         this.dx = dx;
     }
 
     /**
-     * simple getter for velocity in y direction
-     * @return integer representation of velocity in y direction
+     * simple getter for {@link DynamicGameObject#dx}
+     * @return {@link DynamicGameObject#dx}
      */
     public final int getDy() {
         return dy;
     }   
 
     /**
-     * simple setter for velocity in y direction
-     * @param dy integer value of velocity in y direction
+     * simple setter for {@link DynamicGameObject#dy}
+     * @param dy int value of velocity in y direction
      */
     public final void setDy(int dy) {
         this.dy = dy;
@@ -94,8 +96,8 @@ public abstract class DynamicGameObject extends StaticGameObject {
     }
 
     /**
-     * simple getter for representation of object that is shown in map
-     * @return char representation of object
+     * simple getter for {@link DynamicGameObject#placeHolder}
+     * @return {@link DynamicGameObject#placeHolder}
      */
     public char getPlaceHolder() {
         return placeHolder;
@@ -108,8 +110,8 @@ public abstract class DynamicGameObject extends StaticGameObject {
     abstract public boolean logic();
     
     /**
-     * simple getter for size of object in map
-     * @return integer value of size
+     * simple getter for {@link DynamicGameObject#size}
+     * @return {@link DynamicGameObject#size}
      */
     public int getSize(){
         return size;
@@ -137,6 +139,10 @@ public abstract class DynamicGameObject extends StaticGameObject {
      */
     abstract protected void destroy();
     
+    /**
+     * Utility method used by controller
+     * @return returns false defaultly
+     */
     public boolean focused(){
         return false;
     }

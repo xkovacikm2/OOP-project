@@ -10,7 +10,7 @@ import model.basic.FieldObserver;
 import model.terrain.Map;
 
 /**
- *
+ *Utility static class for communication between view and model
  * @author kovko
  */
 public final class ViewRequestsHandler {
@@ -30,8 +30,8 @@ public final class ViewRequestsHandler {
     }
     
     /**
-     * Prints string to console
-     * @param s
+     * Adds newline to string and calls {@link GUI#consoleWrite(java.lang.String) }
+     * @param s - string to print to console
      */
     public static void consolePrintln(String s){
         gui.consoleWrite(s+"\n");
@@ -39,7 +39,7 @@ public final class ViewRequestsHandler {
     
     /**
      * Converts number to string and calls overloaded method {@link ViewRequestsHandler#consolePrintln(java.lang.String)  consolePrintln}
-     * @param n 
+     * @param n - Number to print to console
      */
     public static void consolePrintln(Number n){
         consolePrintln(n.toString());
@@ -69,7 +69,7 @@ public final class ViewRequestsHandler {
     }
     
     /**
-     * move animation request handler for dynamic game objects
+     * move animation request handler
      */
     public static void repaintBattleGround() {
         List<DynamicGameObject> Objects = FieldObserver.getDynamicObjectsArrayList();
@@ -85,7 +85,7 @@ public final class ViewRequestsHandler {
     
     /**
      * draws map on canvas
-     * @param map 
+     * @param map - map to be drawn
      */
     public static void drawMap(Map map){
         int mapArray[][]=map.getMap();

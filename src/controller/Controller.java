@@ -5,9 +5,14 @@ import View.ViewRequestsHandler;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility static class handling communication between Controller and Model
+ * @author kovko
+ */
 public final class Controller {
     
     private static int clickedId = FocusSetter.ID_NULL;
+    private static final List<ControllerObservable> Observables = new ArrayList<>();
     
     /**
      * Utility class is not ment to be instanced!!!
@@ -16,18 +21,21 @@ public final class Controller {
         throw new Exception("Utility class is not ment to be instanced!!!");
     }
     
-    private static List<ControllerObservable> Observables = new ArrayList<>();
-    
     /**
      * Simple setter for active menu button
-     * @param id 
+     * @param id id of crew member to be selected
      */
     public static void setClickedId(int id){
         clickedId=id;
     }
     
-    
-    public static void objectClicked(int x, int y) throws Exception{
+    /**
+     * Creates new instance of FocusSetter and calls {@link Controller#setFocus(controller.FocusSetter) }
+     * @param x coordinate
+     * @param y coordinate
+     * @throws CrewNotSelectedException if player haven't chosen role in tank
+     */
+    public static void objectClicked(int x, int y) throws CrewNotSelectedException{
         if(clickedId==FocusSetter.ID_NULL){
             throw (CrewNotSelectedException.getInstance());
         }
@@ -38,8 +46,8 @@ public final class Controller {
     }
     
     /**
-     * adds observable to private arraylist of ControllerObservables
-     * @param o 
+     * adds observable to {@link Controller#Observables}
+     * @param o object to be added
      */
     public static void addObservable(ControllerObservable o){
         Observables.add(o);
@@ -47,8 +55,8 @@ public final class Controller {
     }
     
     /**
-     * removes observable from private arraylist of ControllerObservables
-     * @param o 
+     * removes observable from {@link Controller#Observables}
+     * @param o object to be added
      */
     public static void removeObservable(ControllerObservable o){
         Observables.remove(o);
@@ -56,18 +64,18 @@ public final class Controller {
     }
     
     /**
-     * Sends ControllerEvent given as param to all observables
-     * @param e 
+     * Sends {@link ControllerEvent} given as param to all observables
+     * @param e event to be sent
      */
     public static void notify(ControllerEvent e){
-        for (ControllerObservable observable:Observables){
+        Observables.stream().forEach((observable) -> {
             observable.controllerActionListener(e);
-        }
+        });
     }
     
     /**
-     * Sets FocusSetter given as param to all observables
-     * @param fs 
+     * Sets {@link FocusSetter} given as param to all observables
+     * @param fs event to be sent
      */
     private static void setFocus(FocusSetter fs){
         Observables.stream().forEach((observable) -> {

@@ -2,7 +2,7 @@
 package controller;
 
 /**
- *
+ *Excetion thrown when there is attempt to create new ControllerEvent while crew member is not selected
  * @author kovko
  */
 public class CrewNotSelectedException extends Exception{
@@ -12,7 +12,7 @@ public class CrewNotSelectedException extends Exception{
 
     /**
      * Constructor replacement
-     * @return instanceOfCrewNotSelectedException
+     * @return instance of CrewNotSelectedException
      */
     public static CrewNotSelectedException getInstance(){
         if(instance==null){
@@ -25,6 +25,10 @@ public class CrewNotSelectedException extends Exception{
         this.message = "Nevybratý člen posádky";
     }
     
+    /**
+     * Getter for exception message
+     * @return 
+     */
     @Override
     public String getMessage(){
         return message;

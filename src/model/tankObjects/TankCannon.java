@@ -36,7 +36,7 @@ public class TankCannon extends StaticGameObject implements OnTankMoveListener{
      */
     public void shoot(String where){
         if(cooldown==0){
-            int dx=0, dy=0;
+            int dx, dy;
             switch (where){
                 case "left": dx=this.LEFT; dy=0; ViewRequestsHandler.consolePrintln(new Projectile(this.x-1, this.y, dx, dy) + " has been fired by " + this); break;
                 case "right": dx=this.RIGHT; dy=0; ViewRequestsHandler.consolePrintln(new Projectile(this.x+2, this.y, dx, dy) + " has been fired by " + this); break;

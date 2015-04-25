@@ -9,7 +9,7 @@ import model.listeners.OnTankDestroyListener;
 import model.tankObjects.Tank;
 
 /**
- *
+ *Drives the tank
  * @author kovko
  */
 public class TankDriver extends ControllerObservable implements OnTankDestroyListener{
@@ -24,20 +24,37 @@ public class TankDriver extends ControllerObservable implements OnTankDestroyLis
         System.out.println(this.toString() +" has been created");
     }
     
+    /**
+     * getter for tank coordinates
+     * @return 
+     */
     @Override
     public int[] getCoords(){
        int coords[] = {tank.getX(), tank.getY()};
        return coords;
     }
     
+    /**
+     * getter for {@link TankDriver#tank}
+     * @return 
+     */
     Tank getTank(){
         return this.tank;
     }
     
+    /**
+     * calls {@link Tank#getSize() } and returns its value
+     * @return {@link Tank#size } 
+     */
     int measureSize(){
         return tank.getSize();
     }
     
+    /**
+     * calculates where to move and calls {@link Tank#dx} and {@link Tank#dy} 
+     * @param coords
+     * @return 
+     */
     boolean nextCoords(int[] coords){
         if(!focus){
             int myCoords[]={tank.getX(), tank.getY()};

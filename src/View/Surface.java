@@ -1,6 +1,7 @@
 package View;
 
 import controller.Controller;
+import controller.CrewNotSelectedException;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,28 +14,26 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- *
+ *Canvas for drawing the battle
  * @author kovko
  */
 public class Surface extends JPanel{
     
     private Rectangle2D.Float background;
     private Rectangle2D.Float exit;
-    private List<Rectangle2D.Float> walls;
+    private final List<Rectangle2D.Float> walls;
     private List<DrawableObject> objects;
     
     private BufferedImage wallTexture;
     private BufferedImage exitTexture;
     private BufferedImage tankTexture;
     private BufferedImage projectileTexture;
-    private Color backgroundColor;
+    private final Color backgroundColor;
     
     public Surface(){
         super();
@@ -53,10 +52,14 @@ public class Surface extends JPanel{
             projectileTexture = ImageIO.read(new File("images/projectile.png"));
         } 
         catch (IOException ex) {
-            JOptionPane.showMessageDialog(Surface.this, ex.getMessage(), "Upozornenie", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(Surface.this, ex.getMessage(), "Chyba", JOptionPane.ERROR_MESSAGE);
         }
     }
-            
+    
+    /**
+     * Prepares Graphics component to be drawn at and calls {@link Surface#doDrawing(java.awt.Graphics) }
+     * @param g 
+     */
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -92,22 +95,47 @@ public class Surface extends JPanel{
         ViewRequestsHandler.consolePrintln("Surface repainted");
     }
 
+    /**
+     * Setter for {@link Surface#background}
+     * @param x
+     * @param y
+     * @param size 
+     */
     public void setBackground(int x, int y, int size) {
         this.background = new Rectangle2D.Float(x, y, size, size);
     }
 
+    /**
+     * Setter for {@link Surface#exit}
+     * @param x
+     * @param y
+     * @param size 
+     */
     public void setExit(int x, int y, int size) {
         this.exit = new Rectangle2D.Float(x, y, size, size);
     }
     
+    /**
+     * Creates new wall with given params and adds it to {@link Surface#walls}
+     * @param x
+     * @param y
+     * @param size 
+     */
     public void addWalls(int x, int y, int size) {
         this.walls.add(new Rectangle2D.Float(x, y, size, size));
     }
 
+    /**
+     * Adds Drawable object to {@link Surface#objects}
+     * @param object 
+     */
     public void addObjects(DrawableObject object) {
         this.objects.add(object);
     }
     
+    /**
+     * Empties {@link Surface#objects}
+     */
     public void resetObjects(){
         this.objects= new ArrayList<>();
     }
@@ -120,17 +148,16 @@ public class Surface extends JPanel{
             
             System.out.println("Mouse clicked at "+x+" "+y);
             
-            for (DrawableObject object:objects){
-                if(object.rect.contains(x, y)){
+            objects.stream().filter((object) -> (object.rect.contains(x, y))).forEach((object) -> {
+                new Thread(() -> {
                     try{
                         Controller.objectClicked((int)object.rect.x, (int)object.rect.y);
                     }
-                    catch(Exception exception){
+                    catch(CrewNotSelectedException exception){
                         JOptionPane.showMessageDialog(Surface.this, exception.getMessage(), "Upozornenie", JOptionPane.INFORMATION_MESSAGE);
                     }
-                    break;
-                }
-            }
+                }).start();
+            });
         }
     }
 }

@@ -17,8 +17,7 @@ import model.basic.FieldObserver;
 public class Projectile extends DynamicGameObject{
 
     private int range;
-    //max range
-    private static final int MAXRANGE = 30;
+    private static final int MAXRANGE = 20;
         
     /**
      * getter for maxrange of projectile
@@ -79,9 +78,6 @@ public class Projectile extends DynamicGameObject{
         this.range--;
     }
     
-    /**
-     * checks range remaing
-     */
     private void checkRange(){
         if (this.range<1){
             this.destroy();
@@ -98,17 +94,11 @@ public class Projectile extends DynamicGameObject{
         FieldObserver.onProjectileExplosion(new int[]{this.x,this.y});
     }
     
-    
     private boolean pathBlocked(){
         ViewRequestsHandler.consolePrintln(this +" is asking if the path is clear");
         return FieldObserver.isSomething(this.x, this.y);
     }
 
-    /**
-     * implementation of
-     * @param projectileCoords 
-     * @return  true
-     */
     @Override
     public boolean onProjectileHit(int[] projectileCoords) {
         //if explosion occured nearby

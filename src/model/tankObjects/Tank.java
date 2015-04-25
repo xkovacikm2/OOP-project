@@ -22,10 +22,9 @@ import java.util.List;
  * @author kovko
  */
 public class Tank extends DynamicGameObject{
-    private int size;
-    private List<OnTankMoveListener> onTankMoveListeners = new ArrayList<>();
-    private List<OnTankDestroyListener> onTankDestroyListeners = new ArrayList<>();
-    private List<ControllerObservable> controllerObservables = new ArrayList<>();
+    private final List<OnTankMoveListener> onTankMoveListeners = new ArrayList<>();
+    private final List<OnTankDestroyListener> onTankDestroyListeners = new ArrayList<>();
+    private final List<ControllerObservable> controllerObservables = new ArrayList<>();
 
     public Tank(int x, int y, int parentID){
         super(x, y, 1);
@@ -43,9 +42,7 @@ public class Tank extends DynamicGameObject{
         else
             ViewRequestsHandler.consolePrintln("Cannot move there!");
         //send tick to listeners
-        for(OnTankMoveListener listener:onTankMoveListeners){
-            listener.onTankMove(this);
-        }
+        onTankMoveListeners.stream().forEach(listener -> listener.onTankMove(this));
         ViewRequestsHandler.repaintBattleGround();
         this.dx=0;
         this.dy=0;
@@ -88,9 +85,7 @@ public class Tank extends DynamicGameObject{
      */
     protected void destroy() {
         FieldObserver.removeDynamicGameObject(this);
-        for(OnTankDestroyListener listener:onTankDestroyListeners){
-            listener.onTankDestroy();
-        }
+        onTankDestroyListeners.stream().forEach(listener -> listener.onTankDestroy());
     }
     
     @Override

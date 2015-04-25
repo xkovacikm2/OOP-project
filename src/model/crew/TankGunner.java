@@ -10,7 +10,7 @@ import model.tankObjects.Tank;
 import model.tankObjects.TankCannon;
 
 /**
- *
+ *Shoots the gun
  * @author kovko
  */
 public class TankGunner extends ControllerObservable implements OnTankDestroyListener{
@@ -76,6 +76,11 @@ public class TankGunner extends ControllerObservable implements OnTankDestroyLis
         return (new int[]{this.canon.getX(), this.canon.getY()});
     }
 
+    /**
+     * Shoot commad listener
+     * @param targetX
+     * @param targetY 
+     */
     void shootOrder(int targetX, int targetY) {
         if(!focus)
             shoot(targetX, targetY);

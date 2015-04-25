@@ -2,7 +2,7 @@
 package controller;
 
 /**
- *
+ *Simple event class for sending messages between controller and model
  * @author kovko
  */
 public class ControllerEvent {
@@ -11,13 +11,16 @@ public class ControllerEvent {
     public static final int RIGHT_ARROW = 3;
     public static final int DOWN_ARROW = 4;
     
-    private int eventID;
+    private final int eventID;
 
     public ControllerEvent(int eventID) {
         this.eventID=eventID;
     }
 
-    
+    /**
+     * Simple getter for {@link ControllerEvent#eventID}
+     * @return 
+     */
     public int getEventID() {
         return eventID;
     }

@@ -1,12 +1,4 @@
-/*
- * This class handles orders from Colonel about what target should be attacked
- * Decides the direction of movement and orders it to TankDriver
- * Decides whether to shoot or ceize fire, if target is out of range
- * Orders TankGunner to shoot at position of enemy tank
- * if Tank dies, kills himself and the crew
- * is owned by tank, enlisted by colonel
- * has references to tank, and crew
- */
+
 package model.crew;
 import View.ViewRequestsHandler;
 import model.listeners.OnTankMoveListener;
@@ -18,12 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Second highest ranked military officer
+ * Handles communication between Colonel and other crew members
+ * Handles AI of targeting and pathfinding
  * @author kovko
  */
 public class TankCommander implements OnTankMoveListener, OnTankDestroyListener{
-    private TankDriver driver;
-    private TankGunner gunner;
-    private Colonel parent;
+    private final TankDriver driver;
+    private final TankGunner gunner;
+    private final Colonel parent;
     private int targetCoords[];
     private List<int[]> path = new ArrayList<>();
     private int tickCounter;
@@ -39,7 +34,7 @@ public class TankCommander implements OnTankMoveListener, OnTankDestroyListener{
     
     /**
      * sets new target for tank to reach and calculates shortest path to it
-     * @param targetCoords 
+     * @param targetCoords[] coordinates of the exit point
      */
     public void setObjective(int targetCoords[]){
         this.targetCoords=targetCoords;
@@ -71,20 +66,20 @@ public class TankCommander implements OnTankMoveListener, OnTankDestroyListener{
                         case 2: newcoord[1]++; break;
                         case 3: newcoord[1]--; break;
                     }
-                    //kontrola steny
+                    //wall check
                     if(FieldObserver.isWall(newcoord[0], newcoord[1], driver.measureSize())){
                         continue;
                     }
-                    //kontrola ci necuvam
+                    //reverse check
                     if(this.cmpCoords(prevstep, newcoord)){
                         continue;
                     }
-                    //kontrola ci nezapisujem jedno pole 2x
+                    //duplicates check
                     if(this.cmpCoords(step, newcoord)){
                         continue;
                     }
                     step.add(newcoord);
-                    //ak som v cieli
+                    //target reached check
                     if(this.cmpCoords(this.targetCoords, newcoord)){
                         flag = false;
                         break;
@@ -101,12 +96,7 @@ public class TankCommander implements OnTankMoveListener, OnTankDestroyListener{
     }
     
     private boolean cmpCoords(List<int[]> step, int[] coord){
-        for(int[] contcoord:step){
-            if(cmpCoords(contcoord, coord)){
-                return true;
-            }
-        }
-        return false;
+        return step.stream().anyMatch((contcoord) -> (cmpCoords(contcoord, coord)));
     }
     
     private boolean cmpCoords(int[] target, int[] coord, int range){
@@ -159,9 +149,7 @@ public class TankCommander implements OnTankMoveListener, OnTankDestroyListener{
      */
     private void writePath(){
         ViewRequestsHandler.consolePrintln(this+ "is announcing it's path!");
-        for(int[] coord:this.path){
-            ViewRequestsHandler.consolePrintln("x: "+coord[0]+" y: "+coord[1]);
-        }
+        this.path.stream().forEach((coord) -> ViewRequestsHandler.consolePrintln("x: "+coord[0]+" y: "+coord[1]));
     }
     
     /**
@@ -189,12 +177,12 @@ public class TankCommander implements OnTankMoveListener, OnTankDestroyListener{
     @Override
     public void onTankMove(Tank tank) {
         //obzeranie sa okolo seba
-        int targetCoords[] = FieldObserver.inLOS(this.driver.getCoords(), this.parent.getID());
+        int targetCoordinates[] = FieldObserver.inLOS(this.driver.getCoords(), this.parent.getID());
         //ak nieco okolo mna je
-        if(targetCoords!=null){
+        if(targetCoordinates!=null){
             //popytam sa povolenie k strelbe
             ViewRequestsHandler.consolePrintln(this + " is ordering "+this.gunner+" to shoot!");
-            this.gunner.shootOrder(targetCoords[0], targetCoords[1]);
+            this.gunner.shootOrder(targetCoordinates[0], targetCoordinates[1]);
         }
     }
     

@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import model.basic.Main;
 
 /**
- *
+ * Window of application
  * @author kovko
  */
 public class GUI extends JFrame{
@@ -34,8 +34,7 @@ public class GUI extends JFrame{
     private JButton tankDriverFocusSetter;
     private JButton tankGunnerFocusSetter;
     
-    public GUI(Surface surface){
-        
+    public GUI(Surface surface){   
         setTitle("Warsong Tank Edition");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WIDTH, HEIGHT);
@@ -49,6 +48,10 @@ public class GUI extends JFrame{
         setFocusable(true);
     }
     
+    /**
+     * Appends string to {@link GUI#console}
+     * @param s 
+     */
     public void consoleWrite(String s){
         console.append(s);
     }
@@ -87,7 +90,7 @@ public class GUI extends JFrame{
         switchToSetFocusMenu.addActionListener(e->{switchMenus(menuSetFocus, menuDefault);});
         
         moveLoop = createButton("Ukončiť ťah", menuDefault);
-        moveLoop.addActionListener(e->{Main.mainLoop();});
+        moveLoop.addActionListener(e->Main.mainLoop());
     };
     
     private void setMenuSetFocusButtons(){

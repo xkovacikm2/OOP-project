@@ -5,32 +5,20 @@ import model.crew.TankCommander;
 import java.util.ArrayList;
 import java.util.List;
 import model.terrain.Map;
+
 /**
- *
+ * Top ranked military officer class
  * @author kovko
  */
 public class Colonel {
-    /**
-     * list of TankCommanders subordinated to the instance of Colonel
-     */
-    private List<TankCommander> commanders = new ArrayList<>();
-    
-    /**
-     * number of Colonels created - used for generating ID
-     */
+
+    private final List<TankCommander> commanders;
     private static int count = 0;
-    
-    /**
-     * ID of the instance of Colonel
-     */
-    private int ID;
-    
-    /**
-     * copy of current map, where battle takes place
-     */
-    private Map map;
+    private final int ID;
+    private final Map map;
     
     public Colonel(){
+        this.commanders = new ArrayList<>();
         this.map = FieldObserver.getMap();
         count++;
         this.ID=count+2;
@@ -42,7 +30,7 @@ public class Colonel {
      * Method creates an army for Colonel
      */
     private void create(){
-        for(int i=1; i<=3; i++){
+        for(int i=1; i<=5; i++){
             int coords[] = this.map.requestSpawnPoint(this.ID);
             this.commanders.add(new TankCommander(this, coords));
             System.out.println(this+" spawned TankCommander number: " +i);
@@ -54,18 +42,12 @@ public class Colonel {
      * @return true if battle is won, false otherwise
      */
     boolean won(){
-        for(TankCommander commander:commanders){
-            if(commander.atTarget()){
-                ViewRequestsHandler.consolePrintln(this +" won the battle! Congratulations");
-                return true;
-            }
-        }
-        return false;
+        return commanders.stream().anyMatch(c -> c.atTarget());
     }
 
     /**
-     * Simple getter of Colonel's ID
-     * @return integer value of ID
+     * Simple getter for {@link Colonel#ID}
+     * @return {@link Colonel#ID}
      */
     public int getID() {
         return this.ID;
@@ -76,21 +58,23 @@ public class Colonel {
      */
     void announceTarget(){
         int exit[] = map.getExit();
-        for(TankCommander commander:commanders){
+        commanders.stream().forEach((commander) -> {
             System.out.println(this + "sent the target coordinates to: "+ commander);
             commander.setObjective(exit);
-        }
+        });
     }
     
     /**
      * Sends new loop tick for subordinated TankCommanders
      */
     void sendLoopSignal(){
-        for(TankCommander commander:commanders){
-            commander.performLoop();
-        }
+        commanders.stream().forEach(commander -> commander.performLoop());
     }
     
+    /**
+     * Removes commander from {@link Colonel#commanders}
+     * @param commander 
+     */
     public void removeTankCommander(TankCommander commander){
         this.commanders.remove(commander);
         ViewRequestsHandler.consolePrintln(this+" lost yet another "+commander);
