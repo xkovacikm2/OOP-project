@@ -1,6 +1,6 @@
 
 package model.crew;
-import View.ViewRequestsHandler;
+import view.ViewRequestsHandler;
 import model.listeners.OnTankMoveListener;
 import model.tankObjects.Tank;
 import model.basic.Colonel;

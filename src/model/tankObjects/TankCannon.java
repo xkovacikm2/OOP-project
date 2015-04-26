@@ -6,7 +6,7 @@
  */
 package model.tankObjects;
 
-import View.ViewRequestsHandler;
+import view.ViewRequestsHandler;
 import model.listeners.OnTankMoveListener;
 import model.projectileObjects.Projectile;
 import model.abstractObjects.StaticGameObject;

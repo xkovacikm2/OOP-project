@@ -1,6 +1,6 @@
 package model.basic;
 
-import View.ViewRequestsHandler;
+import view.ViewRequestsHandler;
 import model.terrain.Map;
 
 /*
@@ -25,16 +25,16 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ViewRequestsHandler.prepareView();
         Map map = new Map();
-        ViewRequestsHandler.drawMap(map);
         FieldObserver.setMap(map);
         colonel1 = new Colonel();
         colonel2 = new Colonel();
-        FieldObserver.clearMap();
-        FieldObserver.animateMap();
         colonel1.announceTarget();
         colonel2.announceTarget();
+        ViewRequestsHandler.prepareView();
+        ViewRequestsHandler.drawMap(map);
+        FieldObserver.clearMap();
+        FieldObserver.animateMap();
     }
     
     public static void mainLoop() {

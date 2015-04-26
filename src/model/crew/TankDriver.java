@@ -1,6 +1,6 @@
 
 package model.crew;
-import View.ViewRequestsHandler;
+import view.ViewRequestsHandler;
 import controller.Controller;
 import controller.ControllerEvent;
 import controller.ControllerObservable;

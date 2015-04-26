@@ -1,7 +1,7 @@
 
 package controller;
 
-import View.ViewRequestsHandler;
+import view.ViewRequestsHandler;
 
 /**
  * Serves as interface for controllable objects

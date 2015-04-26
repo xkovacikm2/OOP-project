@@ -8,7 +8,7 @@
  */
 package model.tankObjects;
 
-import View.ViewRequestsHandler;
+import view.ViewRequestsHandler;
 import controller.ControllerObservable;
 import model.abstractObjects.DynamicGameObject;
 import model.listeners.OnTankMoveListener;

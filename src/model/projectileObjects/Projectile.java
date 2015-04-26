@@ -6,7 +6,7 @@
  */
 package model.projectileObjects;
 
-import View.ViewRequestsHandler;
+import view.ViewRequestsHandler;
 import model.abstractObjects.DynamicGameObject;
 import model.basic.FieldObserver;
 

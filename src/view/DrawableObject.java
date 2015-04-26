@@ -1,5 +1,5 @@
 
-package View;
+package view;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;

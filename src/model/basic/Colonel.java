@@ -1,6 +1,6 @@
 
 package model.basic;
-import View.ViewRequestsHandler;
+import view.ViewRequestsHandler;
 import model.crew.TankCommander;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +60,7 @@ public class Colonel {
         int exit[] = map.getExit();
         commanders.stream().forEach((commander) -> {
             System.out.println(this + "sent the target coordinates to: "+ commander);
-            commander.setObjective(exit);
+            new Thread(() -> commander.setObjective(exit)).start();
         });
     }
     
@@ -68,7 +68,7 @@ public class Colonel {
      * Sends new loop tick for subordinated TankCommanders
      */
     void sendLoopSignal(){
-        commanders.stream().forEach(commander -> commander.performLoop());
+        commanders.stream().forEach(commander -> new Thread(() -> commander.performLoop()).start());
     }
     
     /**

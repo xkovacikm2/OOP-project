@@ -1,7 +1,7 @@
 
 package model.abstractObjects;
 
-import View.ViewRequestsHandler;
+import view.ViewRequestsHandler;
 
 /**
  *Interface for objects capable of movement
