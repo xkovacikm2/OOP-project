@@ -1,0 +1,122 @@
++pridaná schopnosť observera informovať dynamické objekty o výbuchu projektilu
++implementovaná reakcia projektilu na výbuch iného projektilu v jeho bezprostrednom okolí (spôsobí vlastný výbuch)
++pridaný javadoc k triede StaticGameObject
++pridaný javadoc k triede DynamicGameObject
++pridaný javadoc k triede Colonel
++v prípade, že vodič nie je schopný posunúť tank na miesto určené veliteľom, veliteľ zareaguje kalkuláciou novej trasy
++pridaný nový interface PlayerFocusHandler, zatiaľ bez implementácie - príprava na ovládanie posádky uživateľom
+
+/abtraktná metóda DynamicGameObject.move() nahradená implementovanou metódou
+/upravený override Projectile.move() využíva metódu natriedy pomocou super.move() + vlastnú implementáciu
+/upravený algoritmus výpočtu trasy TankCommandera, teraz obsahuje kontrolu dostupnosti cieľa
+
+-zrušený override Tank.move() - dedená metóda postačuje
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
++pridaný javadoc triedy FieldObserver
++pridaný javadoc triedy Main
++pridaný javadoc triedy TankCommander
++pridaná polymorfná metóda addDynamicGameObject() na pridávanie sledovaných DynamicGameObjectov do FieldObserver ArrayListu
+
+/zmenený spôsob vytvárania inštancií posádky a nástrojov. Teraz si vždy nadriadený vytvára podriadeného a všetky nástroje čo potrebuje na svoju činnosť a nie nástroj si vytvára svoju obsluhu
+
+-zrušená metóda observera addProjectile() - nahradená polymorfnou addDynamicGameObject()
+-zrušená metóda observera addTank() - nahradená polymorfnou addDynamicGameObject()
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
++dokončený javadoc pre všetky terajšie triedy
++pridaná funkcionalita zničenia tanku
++pridaný OnTankDestroyListener ktorý implementujú členovia posádky, ktorí sa po zavolaní tejto metódy zabijú
++pridaný balík controller
++pridaná trieda ControllableObjectsObserver ktorá bude obsluhovať uživateľské vstupy a posielať eventy svojim observables
++pridané rozhranie ControllerObservable, ktoré umožňuje komunikáciu s ControllableObjectsObserverom
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
++rozhranie ControllerObservable povýšené na triedu, pridané atribúty idCrew a focus
++pridaná trieda FocusSetter, ktorá je eventom controllera pre nastavenie focusu od hráča
++trieda ControllerObservable obohatená o metódu controllerSetFocusListener(), ktorá spracúva FocusSetter
++pridaná trieda ControllerEvent, ktorá je eventom controllera pre pohybové a palebné žiadosti od hráča
++trieda ControllerObservable obohatená o metódu controllerActionListener(), ktorá spracúva ControllerEvent
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
++pridaný balíček view
++pridaná metóda notify() do statickej triedy Controller, ktorá pošle vygenerovaný ControllerEvent všetkým observables
++pridaná trieda Surface extendujúca JPanel do balíčka View, ktorá sa bude starať o vykreslenie obrazu do GUI
++pridaná trieda GUI extendujúca JFrame do balíčka View, ktorá bude mať na starosti uživateľské rozhranie
++pridaná statická trieda AnimationRequestsHandler, ktorá bude bude spracúvať požiadavky od dynamických objektov na vykreslenie a zároveň agreguje GUI a Surface
+
+/zmenený spôsob balíčkovania, oddelený Model, View a Controller
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
++implementovaná metóda drawMap() do statickej triedy AnimationRequestsHandler, ktorá vykreslí na Surface mapu
++implementovaná metóda drawBatlleground() do statickej triedy AnimationRequestHandler, ktorá vykreslí na Surface všetky objekty.
++pridaný finálny statický atribút instanceOfMain do triedy Main, kde je uložená jej inštancia kvôli ActionListeneru
++trieda Main implementuje ActionListener interface
++pridané tlačítko do GUI "Ukončiť ťah", ktoré má ako ActionListener inštanciu triedy Main a ovláda hlavnú slučku programu
+
+/fixnutý bug, kedy tanky sa nemohli pohybovať nadol a doprava
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
++do balíčka View pridaný object DrawableObject, ktorý umožňuje vykreslovanie objektov farbou podľa príslušnosti k tímom
++upravená metóda doDrawing() objektu Surface tak, aby vedela vykresliť DrawableObject
++implementovaná metóda isFocused do abstraktnej triedy ControllerObservable, ktorá zisťuje, či je objekt kontrolovaný hráčom
++do triedy Tank bol pridaný arraylist ControllerObservables, ktorý zjednodušuje zistenie, či je člen posádky tanku kontrolovaný hráčom
++do triedy Surface bola pridaná privátna trieda MouseClickListener, ktorá obsluhuje kliky na hraciu plochu
++spojazdnené hráčske nastavenie a prepínanie focusu členom posádky tanku
++pridaná kontrola či sa tank nesnaží prejsť cez stenu
++do triedy GUI bola pridaná privátna trieda KeyPressListener, ktorá obsluhuje pokyny z klávesnice
++pridaná implementácia controllerActionListenera v triede TankGunner
++pridané prehrievanie kanónu tanku, po výstrele musí kanón cooldownTime kôl chladnúť
++implentované ovládanie šoféra tanku
+
+/mierne poupravený spôsob generovania bludiska - pridaný manévrovací priestor
+/zvýšený rádius explózie strely
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
++pridané textúry vykresľovaných objektov do triedy Surface. Obrázky sa načítajú pri vytvorení inštancie.
++pridaná throwable trieda CrewNotSelectedException
++pridané vyhodenie výnimky CrewNotSelectedException pri výbere tanku, bez predchádzajúceho výberu člena posádky
++pridané ošetrenie výnimky CrewNotSelectedException - warning v kontextovom okne
+
+/statické triedy odteraz pri pokuse o vytvorenie inštancie vyhodia Exception (ViewRequestHandler, Controller, Main, FieldObserver)
+/konštruktory statických tried zmenené na privátne
+/trieda Main už nie je singleton, ale je statická
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
++napísaný javadoc pre triedu Surface
++napísaný javadoc pre triedu GUI
++napísaný javadoc pre triedu DrawableObject
++napísaný javadoc pre triedu ViewRequestHandler
++napísaný javadoc pre triedu Controller
++napísaný javadoc pre triedu ControllerEvent
++napísaný javadoc pre triedu CrewNotSelectedException
++napísaný javadoc pre triedu FocusSetter
++ošetrený ConcurrentModificationException v metóde moveLoop vo FieldObserveri
+
+/všetky foreach cykly boli upravené na streamy
+/zvýšený počet jednotiek na 5 pre každý tím
+/znížený dostrel
+/zlúčené ošetrenia v metóde loadImages, exception miesto zápisu do loggera vyhodí error message
+/controller eventy sa odteraz posielajú na vlastnom threade
+/controller focus settery sa odteraz posielajú na vlastnom threade
+/výpočty trás u veliteľov a prideľovanie príkazov posádke beží na vlastnom threade
+/evenID v ControllerEvente zmenený na final atribút
+/idCrew a Coords vo FocusSettery zmenený na final atribút
+/aktualizovaný javadoc pre triedu DynamicGameObject
+/aktualizovaný javadoc pre triedu StaticGameObject
+/aktualizovaný javadoc pre triedu Colonel
+/dynamicObjects vo FieldObservere zmenený na final atribút
+/aktualizovaný javadoc pre triedu FieldObserver
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/konštruktor triedy Map nahradený getInstance, ktorý využíva lazy konštrukciu objektu
+
